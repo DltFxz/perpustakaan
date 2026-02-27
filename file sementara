@@ -1,0 +1,24 @@
+if (isset($_POST['simpan'])) {
+$judul = $_POST['judul'];
+$penerbit = $_POST['penerbit'];
+$tggl_terbit = $_POST['tanggal'];
+
+$nama_file = $_FILES['sampul']['name'];
+$tmp_file = $_FILES['sampul']['tmp_name'];
+
+move_uploaded_file($tmp_file, "../uploads/" . $nama_file);
+
+$sql = mysqli_query($conn, "INSERT INTO buku (judul, penerbit, tggl_terbit, sampul)
+VALUES ('$judul', '$penerbit', '$tggl_terbit', '$nama_file')");
+
+if ($sql) {
+header("location:../admin/perpustakawan.php");
+}
+
+if ($conn->query($sql) === TRUE) {
+echo "
+<script>alert('Buku berhasil ditambah!');</script>";
+} else {
+echo "Error: " . $conn->error;
+}
+}
